@@ -70,5 +70,5 @@ app.delete("/api/delete-profile", (req, res) =>{
 });
 
 app.listen(PORT, () => {
-  console.log(`http:localhost:5000`);
+  console.log(`http:localhost:${PORT}`);
 })
