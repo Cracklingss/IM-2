@@ -1,73 +1,74 @@
-//Members:
-// Catubay Jessie Francis
-// Inoc Cloyd Cydreck
-// Sansait Remar
+// Members:
+// Jessie Francis Catubay
+// Cloyd Inoc Cydreck
+// Remar Sansait
 
 const express = require("express");
 const app = express();
 const PORT = 5000;
 const profile = require("./profiles.json");
 
+//middleware
 app.use(express.json());
 
 //CREATE
-app.post("/api/profile", (req, res) => {
-  const { name, email } = req.body;
-  const newUser = { name, email };
+app.post("/api/create-profile", (req, res) => {
+  const { name, age, year } = req.body;
+  const newUser = { name, age, year };
   const data = profile.push(newUser);
 
   res.json({
-    message: "Success",
-    data,
+    message: "Profile added",
+    data: newUser,
   });
 });
 
 //READ
-app.get("/api/get-profiles", (req, res) => {
+app.get("/api/get-profile", (req, res) => {
   res.json(profile);
 });
 
-//UPDATE
-app.put("/api/update-profile", (req, res) =>{
-  const { email, newName, newEmail } = req.body;
+// UPDATE
+app.put("/api/update-profile", (req, res) => {
+  const { name, newName, newAge, newYear, } = req.body;
 
-  const profileIndex = profile.findIndex((p) => p.email === email);
+  const profileIndex = profile.findIndex((p) => p.name === name);
 
-  if (profileIndex === -1) {
-    return res.status(404).json({ message: "Profile not found" });
+  if(profileIndex === -1){
+    return res.status(404).json({ message: "Profile not found!" });
   }
 
   if(newName){
     profile[profileIndex].name = newName;
   }
-  if(newEmail){
-    profile[profileIndex].email = newEmail;
+  if(newAge){
+    profile[profileIndex].age = newAge;
+  }
+  if(newYear){
+    profile[profileIndex].year = newYear;
   }
 
-  res.json({
-    message: "Profile updated succesfully",
-    data: profile[profileIndex],
-  })
+  res.json({ message: "Updated Successfully!" });
 });
 
-//DELETE
+// DELETE
 app.delete("/api/delete-profile", (req, res) =>{
-  const { email, name } = req.body;
+  const { name } = req.body;
 
-  const profileIndex = profile.findIndex((p) => p.email === email);
+  const profileIndex = profile.findIndex((p) => p.name = name);
 
-  if (profileIndex === -1) {
-    return res.status(404).json({ message: "Profile not found" });
+  if(profileIndex === -1){
+    return res.json({ message: "Profile Not Found" });
   }
-  
-  const deletedProfile = profile.splice(profileIndex, 1)[0];
 
+  const deletedProfile = profile.splice(profileIndex, 1)[0];
+  
   res.json({
-    message: "Profile deleted successfully",
-    data: deletedProfile,
+    message: "Profile Deleted Successfully",
+    data: deletedProfile
   });
 });
 
 app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
-});
+  console.log(`http:localhost:5000`);
+})
